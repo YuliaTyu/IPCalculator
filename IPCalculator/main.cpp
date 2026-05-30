@@ -1,5 +1,7 @@
+#define _CRT_SECURE_NO_WARNINGS
 #include<Windows.h>
 #include"resource.h"
+#include<cstdio>
 #include<CommCtrl.h>
 
 BOOL CALLBACK DlgProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
@@ -14,6 +16,7 @@ BOOL CALLBACK DlgProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	switch (uMsg)
 	{
 	case WM_INITDIALOG:
+		SetFocus(GetDlgItem(hwnd, IDC_IPADDRESS));
 		SendMessage(GetDlgItem(hwnd, IDC_SPIN_PREFIX), UDM_SETRANGE, 0, MAKEWORD(32, 0));
 		break;
 	case WM_COMMAND:
@@ -41,8 +44,12 @@ BOOL CALLBACK DlgProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		case IDC_IPMASK:
 			if (HIWORD(wParam) == EN_CHANGE)
 			{
-				SendMessage(hIPmask, IPM_GETADDRESS, 0, (LPARAM)&dwIPmask;
-
+				SendMessage(hIPmask, IPM_GETADDRESS, 0, (LPARAM)&dwIPmask);
+				//dwPrefix = UINT_MAX;
+				for (dwPrefix = 0; dwIPmask; dwPrefix++)dwIPmask <<= 1;
+				CHAR szPrefix[3] = {};
+				sprintf(szPrefix, "%i", dwPrefix);
+				SendMessage(hEditPrefix, WM_SETTEXT, 0, (LPARAM)szPrefix);
 			}
 		case IDOK:
 			break;
